@@ -22,7 +22,7 @@
     + dữ liệu đã được chuẩn hóa
 
 -- Quá trình khai thác:
-    + Tách 280 đầu tiên làm train set
+    + Tách 280 dòng làm train set
     + Các dòng còn lại làm test set
     + Dùng thuật toán naive bayes để học
     + Kiểm tra với test set và thống kê các chỉ số accuracy, recall, precision và F1_score
