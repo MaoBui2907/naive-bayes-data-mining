@@ -11,12 +11,14 @@ if __name__ == "__main__":
     # Dữ liệu được trình bày như cc
     data = shuffle(data, random_state=0)
 
+    # * chia dữ liệu
     train_set = data.iloc[:280]
     X_train, Y_train = np.split(train_set, [13], axis=1)
 
     test_set = data.iloc[280:]
     X_test, Y_real = np.split(test_set, [13], axis=1)
     
+    # ! Học với Naive Bayes
     clf = GaussianNB()
     clf.fit(X_train, np.ravel(Y_train))
 
