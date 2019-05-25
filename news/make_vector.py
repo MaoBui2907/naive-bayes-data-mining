@@ -35,23 +35,21 @@ if __name__ == "__main__":
 
     # * đọc danh sách stopwords nltk
     stop_words = stopwords.words('english')
-
     for i in range(len(data)):
-
-        headline_word_list.append(set())
+        headline_word_list.append([])
         # * chuyển tiêu đề thành 1 list các từ được chuẩn hóa và lược bỏ
-        for word in data[i]['headline']:
+        for word in data[i]['headline'].split(' '):
             if is_letter_only(word) and lem.lemmatize(word) not in stop_words:
                 temp = lem.lemmatize(word)
                 word_list.add(temp)
-                headline_word_list[i].add(temp)
+                headline_word_list[i].append(temp)
 
-    print(len(word_list))
-    # tạo vector:
+    print(word_list)
+    # * tạo vector với BoW:
     for i in range(len(data)):
         word_vector.append(make_vector(
             word_list, headline_word_list[i], data[i]['is_sarcastic']))
 
-    # Ghi dữ liệu ra file data
-    with open('vectorlist.bin', 'wb') as fp:
-        pickle.dump(word_vector, fp)
+    # * Ghi dữ liệu ra file data để chạy thuật toán
+    # with open('vectorlist.bin', 'wb') as fp:
+    #     pickle.dump(word_vector, fp)

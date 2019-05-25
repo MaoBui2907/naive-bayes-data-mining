@@ -1,26 +1,30 @@
-import pandas as pd
 import numpy as np
-from sklearn.naive_bayes import GaussianNB
-from sklearn.utils import shuffle
+import pickle
+from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score, classification_report
 
 if __name__ == "__main__":
 
-    
-    
-    # * chia dữ liệu
-    train_set = data.iloc[:280]
-    X_train, Y_train = np.split(train_set, [13], axis=1)
+    # * Đọc dữ liệu
+    with open('vectorlist.bin', 'rb') as fb:
+        word_vector = pickle.load(fb)
 
-    test_set = data.iloc[280:]
-    X_test, Y_real = np.split(test_set, [13], axis=1)
-    
+    # * chia dữ liệu 20000 dòng để train
+    train_set = word_vector[:200]
+    train_data = np.array([i[:-1] for i in train_set])
+    train_label = np.array([i[-1] for i in train_set])
+
+    # * lấy 6000 dòng còn lại để test
+    test_set = word_vector[200:250]
+    test_data = np.array([i[:-1] for i in test_set])
+    test_label = np.array([i[-1] for i in test_set])
+
     # ! Học với Naive Bayes
-    clf = GaussianNB()
-    clf.fit(X_train, np.ravel(Y_train))
+    clf = MultinomialNB()
+    clf.fit(train_data, train_label)
 
-    Y_predict = clf.predict(X_test)
-    print(Y_predict)
-    print(np.ravel(Y_real))
-    print("accuracy: ", accuracy_score(np.ravel(Y_real), Y_predict))
-    print(classification_report(np.ravel(Y_real), Y_predict))
+    test_predict = clf.predict(test_data)
+    print(test_predict)
+    print(test_label)
+    print("accuracy: ", accuracy_score(test_label, test_predict))
+    print(classification_report(test_label, test_predict))

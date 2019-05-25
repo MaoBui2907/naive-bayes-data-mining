@@ -36,3 +36,12 @@ https://www.kaggle.com/rmisra/news-headlines-dataset-for-sarcasm-detection
     + Chạy lại với code của thư viện sklearn
 
 - Rút ra kết luận, đánh giá
+## Cài đặt môi trường
+- Yêu cầu python 3 và pip
+- Chạy pip install -r requirements.txt để cài các thư viện cần thiết
+- Tải bộ corpora stop_words và wordnet của nltk
+
+## Chạy code:
+- Chạy __python make_vector.py__ để tạo file dữ liệu vector
+- __python sklearn_nb.py__ để học với hàm dựng sẵn ở sklearn
+- __python naive_bayes.py__ để học với hàm tự dựng
