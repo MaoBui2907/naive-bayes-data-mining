@@ -6,6 +6,7 @@ Phân loại tiêu đề tin tức với naive bayes
 - Bùi Nguyên Mão        - 16520724
 - Cao Văn Nam           - 
 - Thừa Lê Thanh Chương  -
+- Bùi Văn Thuận         - 
 
 
 ## Mục tiêu đồ án
