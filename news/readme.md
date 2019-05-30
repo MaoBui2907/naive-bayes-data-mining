@@ -39,7 +39,11 @@ https://www.kaggle.com/rmisra/news-headlines-dataset-for-sarcasm-detection
 ## Cài đặt môi trường
 - Yêu cầu python 3 và pip
 - Chạy pip install -r requirements.txt để cài các thư viện cần thiết
-- Tải bộ corpora stop_words và wordnet của nltk
+- Tải bộ corpora stop_words và wordnet của nltk:
+```
+import nltk
+nltk.download()
+```
 
 ## Chạy code:
 - Chạy __python make_vector.py__ để tạo file dữ liệu vector

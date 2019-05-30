@@ -44,7 +44,7 @@ if __name__ == "__main__":
                 word_list.add(temp)
                 headline_word_list[i].append(temp)
 
-    print(word_list)
+    # print(word_list)
     # * tạo vector với BoW:
     for i in range(len(data)):
         word_vector.append(make_vector(
