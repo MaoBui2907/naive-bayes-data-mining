@@ -5,6 +5,7 @@ from sklearn.metrics import accuracy_score, classification_report
 
 if __name__ == "__main__":
 
+    # ! Chuẩn bị dữ liệu
     # * Đọc dữ liệu
     with open('vectorlist.bin', 'rb') as fb:
         word_vector = pickle.load(fb)
