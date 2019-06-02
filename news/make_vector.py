@@ -20,7 +20,6 @@ def make_vector(word_list, sentence_word_list, label):
 
 
 if __name__ == "__main__":
-
     # ! Tiền xử lý
     # * đọc dữ liệu
     data = []
@@ -51,5 +50,5 @@ if __name__ == "__main__":
             word_list, headline_word_list[i], data[i]['is_sarcastic']))
 
     # * Ghi dữ liệu ra file data để chạy thuật toán
-    # with open('vectorlist.bin', 'wb') as fp:
-    #     pickle.dump(word_vector, fp)
+    with open('vectorlist.bin', 'wb') as fp:
+        pickle.dump(word_vector, fp)
