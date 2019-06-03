@@ -48,6 +48,7 @@ def calculate_conditional_probability(dataset, label_index, laplace_smooth=0):
     return conditional_prob
 
 
+
 def predict(test_vector, label_prob, feature_prob):
     """Trả về nhãn dự đoán với vector dữ liệu đầu vào"""
     # * Ở đây sẽ dùng logarit tự nhiên với tích p(X|c) * p(c) trở thành ln(p(X|c)) + ln(p(c))
