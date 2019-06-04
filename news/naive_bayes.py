@@ -50,18 +50,19 @@ def calculate_probability(label_index):
     return probability
 
 
-def calculate_conditional_probability(dataset, label_index, laplace_smooth=0):
+def calculate_conditional_probability(dataset, features_num, label_index, laplace_smooth=0):
     """
     Trả về một dict có key là các nhãn, value là một vector có số chiều bằng số thuộc tính, 
     lưu xác suất có điều kiện với MLE của mỗi thuộc tính. theo mô hình multinomial naive bayes
     @param dataset 1 mảng các sparse vector training
+    @param features_num số thuộc tính sẽ sử dụng
     @param label_index 1 dict chứa vị trí data có nhãn
     @param laplace_smooth số laplace mặc định = 0
     """
     conditional_prob = {}
     for label in label_index:
         index = label_index[label]
-        data_list = np.array([i[:-1] for i in np.asarray(dataset)[index]])
+        data_list = np.array([i[:features_num] for i in np.asarray(dataset)[index]])
         data_list = data_list.sum(axis=0) + laplace_smooth
         total_number = data_list.sum(axis=0)
         conditional_prob[label] = data_list / total_number
@@ -119,13 +120,16 @@ if __name__ == "__main__":
     with open('vectorlist.bin', 'rb') as fb:
         word_vector = pickle.load(fb)
 
+    # * Giá trị số thuộc tính sẽ sử dụng (số chiều training) max = -1
+    feature_num = -1
+
     # * chia dữ liệu 20000 dòng để train
-    train_set = word_vector[:100]
+    train_set = word_vector[:20000]
     # print(train_set)
 
     # * lấy 6000 dòng còn lại để test
-    test_set = word_vector[100:110]
-    test_data = np.array([i[:-1] for i in test_set])
+    test_set = word_vector[20000:]
+    test_data = np.array([i[:feature_num] for i in test_set])
     test_label = np.array([i[-1] for i in test_set])
     # print(test_set)
 
@@ -140,7 +144,7 @@ if __name__ == "__main__":
 
     # * tính xác suất có điều kiện của mỗi thuộc tính theo mô hình multinomial naive bayes
     conditional_prob = calculate_conditional_probability(
-        train_set, label_index, laplace_smooth=1)
+        train_set, feature_num, label_index, laplace_smooth=1)
 
     # ! test
     predict_list = []
