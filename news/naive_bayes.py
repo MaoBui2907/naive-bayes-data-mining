@@ -1,6 +1,7 @@
 import pickle
 import numpy as np
 from collections import defaultdict
+from scipy import sparse
 
 
 def validation(tp, tn, fp, fn):
@@ -75,8 +76,8 @@ def predict(test_vector, label_prob, feature_prob):
     @param feature_prob: 1 dict chứa 1 list các xác suất với mỗi thuộc tính
     """
     # * Ở đây sẽ dùng logarit tự nhiên với tích p(X|c) * p(c) trở thành ln(p(X|c)) + ln(p(c))
-
     predict = {}
+    # * Tính ra tổng log với mỗi label
     for label in label_prob:
         # * Tính log của xác suất mỗi label
         p_label = np.log(label_prob[label])
@@ -86,12 +87,30 @@ def predict(test_vector, label_prob, feature_prob):
         index = test_vector.indices
 
         # * Tính ln(p(X|c)) của test vector
-        p_features_log = np.log(feature_prob[index]) * data
-        
-        p_predict_label = np.exp(p_features_log + p_label)
-        predict[label] = p_predict_label
-    return predict
+        p_features_log = sum(np.log(feature_prob[label][index]) * data)
 
+        predict[label] = p_label + p_features_log
+
+    # * Lấy giá trị thấp nhất
+    min_log_label = min(predict.values())
+    # * Đến đây đã được một dict chứa giá trị tỉ lệ thuật với xác suất cần tìm
+    for label in label_prob:
+        try:
+            # * giảm bớt việc tính toán bằng cách trừ đi giá trị min
+            predict[label] = np.exp(predict[label] - min_log_label)
+        except:
+            # * Nếu có lỗi, hoặc giá trị tìm ra quá lớn
+            predict[label] = float('inf')
+    
+    sum_posterior = sum(predict.values())
+    for label in predict:
+        # * nếu giá trị quá lớn thì gán giá trị bằng 1
+        if predict[label] == float('inf'):
+            predict[label] = 1
+        # * Tính xác suất bằng a/( a + b)
+        else:
+            predict[label] = predict[label] / sum_posterior
+    return predict
 
 if __name__ == "__main__":
 
@@ -119,27 +138,22 @@ if __name__ == "__main__":
     conditional_prob = calculate_conditional_probability(
         train_set, label_index, laplace_smooth=1)
 
-    print(label_proba)
-    print(conditional_prob)
-
     # ! test
     result = {'tp': 0, 'tn': 0, 'fp': 0, 'fn': 0}
     for samp in test_set:
         samp_features = samp[:-1]
-        print(samp_features)
-        predict = predict(samp_features, label_proba, conditional_prob)
+        predict_prob = predict(sparse.csr_matrix(samp_features), label_proba, conditional_prob)
+        predict_label = list(predict_prob.keys())[list(predict_prob.values()).index(max(predict_prob.values()))]
         real = samp[-1]
-        print("preidct", predict)
-        continue
-        if predict == 1 and real == 1:
+        print(predict_label, real)
+        if predict_label == 1 and real == 1:
             result['tp'] += 1
-        elif predict == 0 and real == 0:
+        elif predict_label == 0 and real == 0:
             result['tn'] += 1
-        elif predict == 1 and real == 0:
+        elif predict_label == 1 and real == 0:
             result['fp'] += 1
-        elif predict == 0 and real == 1:
+        elif predict_label == 0 and real == 1:
             result['fn'] += 1
-
     print('tp, tn, fp, fn: ' + str(result))
     print('accuracy, precision, recall, F1: ' +
           str(validation(result['tp'], result['tn'], result['fp'], result['fn'])))
