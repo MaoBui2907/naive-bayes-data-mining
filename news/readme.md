@@ -13,10 +13,10 @@ https://www.kaggle.com/rmisra/news-headlines-dataset-for-sarcasm-detection
     + Tiêu đề tin là một dòng văn bản bằng tiếng Anh.
 
 - Phương pháp khai thác:
-    + Chỉ dùng 10000 dòng dữ liệu đầu tiên để phục vụ việc huấn luyện
-    + Dùng khoảng 6000 dòng cho quá trình test
+    + Dùng 20000 dòng dữ liệu đầu tiên để phục vụ việc huấn luyện
+    + Dùng khoảng 6000 dòng còn lại cho quá trình test
     + Dùng kỹ thuật Bag of Words để chuyển dữ liệu dạng text sang các vector số.
-    + Nếu số lượng thuộc tính quá lớn, chỉ chọn ra khoảng 1000 thuộc tính xuất hiện nhiều nhất.
+    + Giảm chiều dữ liệu để trực quan hóa
     + Dùng thuật toán naive bayes để xác định nhãn cho dữ liệu.
     + Tính toán và thống kê các chỉ số.
 
@@ -25,8 +25,7 @@ https://www.kaggle.com/rmisra/news-headlines-dataset-for-sarcasm-detection
         - Tách từ
         - Loại bỏ stop words
         - lemmatizing
-        - Chỉ chọn 5000 từ xuất hiện nhiều nhất làm thuộc tính
-
+    
     + Xử lý dữ liệu dạng số
         - Giảm chiều dữ liệu
         - Trực quan hóa dữ liệu bằng đồ thị
@@ -36,16 +35,9 @@ https://www.kaggle.com/rmisra/news-headlines-dataset-for-sarcasm-detection
     + Chạy lại với code của thư viện sklearn
 
 - Rút ra kết luận, đánh giá
-## Cài đặt môi trường
-- Yêu cầu python 3 và pip
-- Chạy pip install -r requirements.txt để cài các thư viện cần thiết
-- Tải bộ corpora stop_words và wordnet của nltk:
-```
-import nltk
-nltk.download()
-```
 
 ## Chạy code:
-- Chạy __python make_vector.py__ để tạo file dữ liệu vector
-- __python sklearn_nb.py__ để học với hàm dựng sẵn ở sklearn
-- __python naive_bayes.py__ để học với hàm tự dựng
+- __python make_vector.py__ để tạo file dữ liệu vector (Yêu cầu đầu tiên)
+- __python visualize.py__ để vẽ biểu đồ dữ liệu trên không gian 2 chiều
+- __python sklearn_nb.py__ để train và test với hàm dựng sẵn ở sklearn
+- __python naive_bayes.py__ để train và test với hàm tự dựng
