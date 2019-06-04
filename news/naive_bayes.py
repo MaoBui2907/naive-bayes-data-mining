@@ -2,7 +2,7 @@ import pickle
 import numpy as np
 from collections import defaultdict
 from scipy import sparse
-
+import time
 
 def validation(tp, tn, fp, fn):
     '''
@@ -125,8 +125,12 @@ if __name__ == "__main__":
 
     # * lấy 6000 dòng còn lại để test
     test_set = word_vector[100:110]
+    test_data = np.array([i[:-1] for i in test_set])
+    test_label = np.array([i[-1] for i in test_set])
     # print(test_set)
 
+    # ? Bắt đầu tính giờ chạy
+    start = time.time()
     # ! training
     # * tính xác suất của nhãn
     label_index = split_with_label(train_set)
@@ -139,21 +143,30 @@ if __name__ == "__main__":
         train_set, label_index, laplace_smooth=1)
 
     # ! test
-    result = {'tp': 0, 'tn': 0, 'fp': 0, 'fn': 0}
-    for samp in test_set:
-        samp_features = samp[:-1]
-        predict_prob = predict(sparse.csr_matrix(samp_features), label_proba, conditional_prob)
+    predict_list = []
+    for samp in test_data:
+        predict_prob = predict(sparse.csr_matrix(samp), label_proba, conditional_prob)
         predict_label = list(predict_prob.keys())[list(predict_prob.values()).index(max(predict_prob.values()))]
-        real = samp[-1]
-        print(predict_label, real)
-        if predict_label == 1 and real == 1:
+        predict_list.append(predict_label)        
+    # ? Kết thúc giờ chạy
+    end = time.time()
+
+    # ! Thống kê chỉ số
+    result = {'tp': 0, 'tn': 0, 'fp': 0, 'fn': 0}
+    for index in range(len(predict_list)):
+        if predict_list[index] == 1 and test_label[index] == 1:
             result['tp'] += 1
-        elif predict_label == 0 and real == 0:
+        elif predict_list[index] == 0 and test_label[index] == 0:
             result['tn'] += 1
-        elif predict_label == 1 and real == 0:
+        elif predict_list[index] == 1 and test_label[index] == 0:
             result['fp'] += 1
-        elif predict_label == 0 and real == 1:
+        elif predict_list[index] == 0 and test_label[index] == 1:
             result['fn'] += 1
+
+    # ! Hiển thị kết quả ra màn hình
+    print("pred: ", np.asarray(predict_list))
+    print("real: ", test_label)
+    print("execute time: ", end -start)
     print('tp, tn, fp, fn: ' + str(result))
     print('accuracy, precision, recall, F1: ' +
           str(validation(result['tp'], result['tn'], result['fp'], result['fn'])))
