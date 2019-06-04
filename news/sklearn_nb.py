@@ -11,12 +11,12 @@ if __name__ == "__main__":
         word_vector = pickle.load(fb)
 
     # * chia dữ liệu 20000 dòng để train
-    train_set = word_vector[:20000]
+    train_set = word_vector[:100]
     train_data = np.array([i[:-1] for i in train_set])
     train_label = np.array([i[-1] for i in train_set])
 
     # * lấy 6000 dòng còn lại để test
-    test_set = word_vector[20000:]
+    test_set = word_vector[100:110]
     test_data = np.array([i[:-1] for i in test_set])
     test_label = np.array([i[-1] for i in test_set])
 
