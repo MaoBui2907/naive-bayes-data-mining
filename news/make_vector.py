@@ -5,6 +5,14 @@ import pickle
 import time
 from collections import defaultdict
 
+# h1 = [a,b,c, a]   0
+# h2 = [b,c,d]      1
+# h3 = [a,c,d]      ?
+# h = [a,b,c,d]
+# h1 = [2,1,1,0]    0
+# h2 = [0,1,1,1]    1
+# h3 = [1,0,1,1] * L=0 ?
+# h3 = [1,0,1,1] * L=1 ?
 
 def is_letter_only(word):
     """Trả về true nếu là 1 từ chỉ toàn ký tự chữ cái, không số, không dấu,..."""
@@ -31,7 +39,7 @@ if __name__ == "__main__":
     # ! Tiền xử lý
     # * đọc dữ liệu
     data = []
-    with open('./Sarcasm_Headlines_Dataset.json', 'r') as f:
+    with open('./data.json', 'r') as f:
         data = [eval(i) for i in f]
 
     # * tạo danh sách từ, tách từ ở các headline và chuẩn hóa

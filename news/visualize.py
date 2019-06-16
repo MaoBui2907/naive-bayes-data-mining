@@ -17,7 +17,7 @@ if __name__ == "__main__":
     feature_num = 2000
 
     # * chia dữ liệu 20000 dòng để train
-    train_set = word_vector[:2000]
+    train_set = word_vector[:20000]
     train_data = np.array([i[:feature_num] for i in train_set])
     train_label = np.array([i[-1] for i in train_set])
 

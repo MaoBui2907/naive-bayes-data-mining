@@ -24,16 +24,20 @@ if __name__ == "__main__":
     # ? Bắt đầu tính giờ chạy
     start = time.time()
     # ! Học với Naive Bayes
+    # tao bien clf luu xac suat 
     clf = MultinomialNB()
+    # tinsh ra cac xac suat
     clf.fit(train_data, train_label)
+    # du doan : 1 hoac 0
     test_predict = clf.predict(test_data)
-    
+
     # ? Kết thúc giờ chạy
     end = time.time()
 
     # ! Hiện kết quả
     print("pred: ", test_predict)
     print("real: ", test_label)
-    print("execute time: ", end -start)
+    print("execute time: ", end - start)
     print("accuracy: ", accuracy_score(test_label, test_predict))
+    # cac thong so validation
     print(classification_report(test_label, test_predict))

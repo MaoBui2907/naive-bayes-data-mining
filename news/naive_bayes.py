@@ -12,6 +12,7 @@ def validation(tp, tn, fp, fn):
     @param fp false positive
     @param fn false negative
     '''
+    # độ chính xác = số lần đoán đúng / số lần đoán
     accuracy = (tp + tn) / (tp + tn + fp + fn)
     precision = -1
     recall = -1
@@ -30,11 +31,16 @@ def split_with_label(dataset):
     Trả về index dòng dữ liệu trong các nhóm có nhãn giống nhau
     @param dataset là mảng dữ liệu training
     """
+    # tao dictionary key, value
     output_data = defaultdict(list)
     for ind, val in enumerate(dataset):
         output_data[val[-1]].append(ind)
     return output_data
-
+    # kieu dwx lieu sẽ có
+    # {
+    #     1 : [0,2,3,4,5,6],
+    #     0 : [1,7, 8, 9]
+    # }
 
 def calculate_probability(label_index):
     """
@@ -48,6 +54,10 @@ def calculate_probability(label_index):
     for label in probability:
         probability[label] /= sample_number
     return probability
+    # {
+    #     1: 6/10,
+    #     0: 4/10
+    # }
 
 
 def calculate_conditional_probability(dataset, features_num, label_index, laplace_smooth=0):
@@ -67,6 +77,10 @@ def calculate_conditional_probability(dataset, features_num, label_index, laplac
         total_number = data_list.sum(axis=0)
         conditional_prob[label] = data_list / total_number
     return conditional_prob
+    # {
+    #     1: [0.4, 0.5, 0.6, 0.7],
+    #     0: [0.6, 0.5, 0.4, 0.3]
+    # }
 
 
 def predict(test_vector, label_prob, feature_prob):
@@ -124,11 +138,11 @@ if __name__ == "__main__":
     feature_num = -1
 
     # * chia dữ liệu 20000 dòng để train
-    train_set = word_vector[:20000]
+    train_set = word_vector[:20]
     # print(train_set)
 
     # * lấy 6000 dòng còn lại để test
-    test_set = word_vector[20000:]
+    test_set = word_vector[20:25]
     test_data = np.array([i[:feature_num] for i in test_set])
     test_label = np.array([i[-1] for i in test_set])
     # print(test_set)
